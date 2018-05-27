@@ -1,6 +1,7 @@
 package com.amdege.shash.circularrevealanimation;
 
 import android.animation.Animator;
+import android.annotation.SuppressLint;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,16 +12,17 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
     FloatingActionButton mFloatButton;
     ImageView imageView;
-    ImageView revealedImage;
+    TextView revealedText;
     Animation alphaAnimation;
     float pixelDensity;
     LinearLayout revealedView;
-    boolean revealed = true;
+    boolean revealed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +35,20 @@ public class MainActivity extends AppCompatActivity {
         mFloatButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         revealedView = (LinearLayout) findViewById(R.id.revealedView);
         alphaAnimation = AnimationUtils.loadAnimation(this, R.anim.alpha_anim);
-        revealedImage = (ImageView) findViewById(R.id.revealedImage);
+        revealedText = (TextView) findViewById(R.id.revealedText);
+
+
+        mFloatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchAnimation(view);
+            }
+        });
 
     }
 
+
+    @SuppressLint("ResourceAsColor")
     public void launchAnimation(View view) {
 
         int x = imageView.getRight();
@@ -45,16 +57,17 @@ public class MainActivity extends AppCompatActivity {
 
         int finalRadius = (int) Math.hypot(imageView.getWidth(),imageView.getHeight());
 
-        if (revealed) {
+        if (!revealed) {
 
-            mFloatButton.setBackgroundResource(R.drawable.ic_launcher_background);
+            mFloatButton.setBackgroundColor(R.color.color_holo_red);
+            mFloatButton.setImageResource(R.mipmap.image_cancel);
 
             FrameLayout.LayoutParams parameters = (FrameLayout.LayoutParams)
                     revealedView.getLayoutParams();
             parameters.height = imageView.getHeight();
             revealedView.setLayoutParams(parameters);
 
-            final Animator revealAnim = ViewAnimationUtils.createCircularReveal(revealedView,x,y,0,finalRadius);
+            Animator revealAnim = ViewAnimationUtils.createCircularReveal(revealedView,x,y,0,finalRadius);
             revealAnim.setDuration(700);
 
             revealAnim.addListener(new Animator.AnimatorListener(){
@@ -67,8 +80,8 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onAnimationEnd(Animator animator) {
 
-                    revealedView.setVisibility(View.VISIBLE);
-                    revealedImage.startAnimation(alphaAnimation);
+                    revealedText.setVisibility(View.VISIBLE);
+                    revealedText.startAnimation(alphaAnimation);
 
                 }
 
@@ -86,11 +99,11 @@ public class MainActivity extends AppCompatActivity {
             revealedView.setVisibility(View.VISIBLE);
             revealAnim.start();
 
-            revealed = false;
+            revealed = true;
 
         }else{
 
-            mFloatButton.setBackgroundResource(R.color.colorAccent);
+            mFloatButton.setImageResource(R.mipmap.twitter_logo);
 
             Animator endAnim = ViewAnimationUtils.createCircularReveal(revealedView, x, y, finalRadius, 0);
             endAnim.setDuration(400);
@@ -104,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onAnimationEnd(Animator animator) {
                     revealedView.setVisibility(View.GONE);
-                    revealedImage.setVisibility(View.GONE);
+                    revealedText.setVisibility(View.GONE);
                 }
 
                 @Override
@@ -120,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             endAnim.start();
-            revealed = true;
+            revealed = false;
 
         }
     }
