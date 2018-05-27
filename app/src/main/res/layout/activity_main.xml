@@ -67,7 +67,7 @@
                 android:background="@color/color_holo_red"
                 android:backgroundTint="@color/color_holo_red"
                 android:clickable="true"
-                android:src="@mipmap/twitter_logo"
+                android:src="@mipmap/listing"
                 app:backgroundTint="@color/color_holo_red"
                 app:fabSize="normal" />
 

@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         int x = imageView.getRight();
         int y = imageView.getBottom();
-        x -= 20*pixelDensity;
+        x -= 40*pixelDensity;
 
         int finalRadius = (int) Math.hypot(imageView.getWidth(),imageView.getHeight());
 
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
         }else{
 
-            mFloatButton.setImageResource(R.mipmap.twitter_logo);
+            mFloatButton.setImageResource(R.mipmap.listing);
 
             Animator endAnim = ViewAnimationUtils.createCircularReveal(revealedView, x, y, finalRadius, 0);
             endAnim.setDuration(400);
